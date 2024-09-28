@@ -1,0 +1,31 @@
+<svg width="3961" height="3536" viewBox="0 0 3961 3536" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3_170)">
+<rect width="3961" height="3536" fill="white"/>
+<rect width="3961" height="3536" fill="#D9D9D9"/>
+<circle cx="1445.5" cy="2434.5" r="242" stroke="#4F87BB" stroke-width="25"/>
+<circle cx="3551.5" cy="842.5" r="252" stroke="black" stroke-width="5"/>
+<circle cx="1129.5" cy="452.5" r="252" stroke="black" stroke-width="5"/>
+<circle cx="1706.5" cy="2682.5" r="252" stroke="black" stroke-width="5"/>
+<circle cx="487.5" cy="3080.5" r="252" stroke="black" stroke-width="5"/>
+<circle cx="2753.5" cy="2943.5" r="252" stroke="black" stroke-width="5"/>
+<circle cx="1445.5" cy="2434.5" r="6.5" fill="black"/>
+<circle cx="3551.5" cy="842.5" r="6.5" fill="black"/>
+<circle cx="1706.5" cy="2682.5" r="6.5" fill="black"/>
+<circle cx="487.5" cy="3080.5" r="6.5" fill="black"/>
+<circle cx="2753.5" cy="2943.5" r="6.5" fill="black"/>
+<line x1="1446.56" y1="2434.83" x2="494.562" y2="3080.83" stroke="black" stroke-width="2"/>
+<line x1="1446.69" y1="2433.28" x2="1707.69" y2="2681.28" stroke="black" stroke-width="2"/>
+<line x1="527.1" y1="-5218.47" x2="527.1" y2="7813.47" stroke="black" stroke-width="5"/>
+<line x1="1571.03" y1="-5218.47" x2="1571.03" y2="7813.47" stroke="black" stroke-width="5"/>
+<line x1="2614.97" y1="-5218.47" x2="2614.97" y2="7813.47" stroke="black" stroke-width="5"/>
+<line x1="3658.9" y1="-5218.47" x2="3658.9" y2="7813.47" stroke="black" stroke-width="5"/>
+<line x1="-4425.47" y1="2860.9" x2="8606.47" y2="2860.9" stroke="black" stroke-width="5"/>
+<line x1="-4425.47" y1="1816.97" x2="8606.47" y2="1816.97" stroke="black" stroke-width="5"/>
+<line x1="-4425.47" y1="773.034" x2="8606.47" y2="773.034" stroke="black" stroke-width="5"/>
+</g>
+<defs>
+<clipPath id="clip0_3_170">
+<rect width="3961" height="3536" fill="white"/>
+</clipPath>
+</defs>
+</svg>

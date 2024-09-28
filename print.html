@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Samsarsa</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Considerations and Limitations</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Samsarsa</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="welcome"><a class="header" href="#welcome">Welcome!</a></h1>
+<img ALIGN="right" width="50%" src="./graphics/samsarsa.gif">
+<h2 id="what-is-samsarsa"><a class="header" href="#what-is-samsarsa">What is Samsarsa?</a></h2>
+<p>I wanted to see if Neural Networks could evolve a form of communication in a survival setting with no initial priming. In Samsarsa, tiny neural networks embody little creatures in an environment where they can see around them in a small radius, move around, eat food, build obstacles, bump into them and other creatures, and speak and hear. Explore the rest of this book for implementation details among other things.</p>
+<h2 id="why-samsarsa"><a class="header" href="#why-samsarsa">Why "Samsarsa"?</a></h2>
+<p>Samsara is the endless cycle of death and rebirth in Buddhism, which felt apt given the repetitive death-rebirth cycle of genetic algorithms, and SARSA (State-Action-Reward; State-Action) is a very important classical algorithm in Reinforcement learning, and stuck out to me as cool when I was studying <a href="http://incompleteideas.net/book/the-book-2nd.html">Sutton-Barto</a> (I have future plans to also try and implement other RL algorithms).</p>
+<p>Check out the <a href="https://github.com/amancapy/samsarsa">project repository</a>! But if you're reading this, you probably were led here from there to begin with.</p>
+<p>I implemented the entire thing in Rust: the physics engine, the visual rendering of the entire environment, and the neural networks, and the genetic algorithm and all of its components, and, well, all the rest of it. It took me a long long time, because this project was my first venture into the Rust programming language, and I was in college for a large chunk of the time. I revived the project after my graduation after a long hiatus, putting the pieces back together and finishing a first working prototype.</p>
+<p>You can navigate either using the sidebar or the buttons on the sides (or at the bottom if you're on mobile). I used a book-building tool called <a href="https://rust-lang.github.io/mdBook/">mdBook</a> for this website, and some of my own code on top.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="components"><a class="header" href="#components">Components</a></h1>
+<p>I'll walk you through the building blocks of the project at a fairly high level of abstraction. I'll spare you the implementation details wherever irrelevant. And, I will omit details of how everything is rendered, as the graphics are rather simple: they're literally all just circles. I used an incredibly performant graphics crate called <a href="https://github.com/ggez/ggez">ggez</a>.</p>
+<ul>
+<li><a href="./physics.html">The Physics Engine</a></li>
+<li><a href="./GA.html">Genetic Algorithms</a></li>
+<li><a href="./beings.html">Beings' Sense-Action</a></li>
+<li><a href="./nns.html">The Neural Networks</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-physics-engine"><a class="header" href="#the-physics-engine">The Physics Engine</a></h1>
+<p>Everything in the system, barring the world's walls, is represented as a circle. Circles are the simplest geometric shapes to implement physics for. All that a circle can do in an environment is move around, rotate, and bump into things. Checking for bumping-into-things for all the circles is a surprisingly annoying operation.</p>
+<p>I give you a bunch of circles moving around in a large perimeter, and I ask you to make sure that none of the circles overlap, as it isn't very physics-y for physical objects to overlap. You can start by defining what a collision is. Thankfully since we're only working with circles and no other shape here, this is rather simple. Two circles are in overlap if the distance between their centres is less than the sum of their radii (radius-es). You can "resolve" this overlap by subtracting half of the vector of overlap from each of their positions (we are assuming that all the circles are of the same mass), and now they would be just in contact at a single point (sliding against each other). The more quickly you keep checking and resolving, the less glitchy it would look, since there isn't much room for very large overlaps to occur between frequent checks.</p>
+<img width="50%" src="./graphics/overlap.svg">
+<p>Now, to resolve all the overlaps for a given circle at a given point in time, naturally you have to check for overlap against every other circle in the world.</p>
+<img width="50%" src="./graphics/all_check.svg">
+<p>This means, if we have <code>n</code> circles in the world, and we have to check each circle against every other circle, we end up with roughly <code>n^2</code> overlap checks. Well obviously, this is a huge issue, since even for a reasonable number of circles, the number of checks we have to perform at every step is gigantic.</p>
+<p>But if you think about it, is it really even possible for a circle to collide with an other all the way across the world? Why even waste time checking? If we're clever with how we store our circles, we really only need to check in a small neighbourhood around each circle. LOTS of algorithms research has gone into this for more serious physics engines, but the simplest algorithm is: Divide your world up into a grid, and for a given circle, check only for other circles in its own gridsquare or the 8 surrounding it. This means, especially if the circles are more uniformly distributed in the world, the number of checks goes down to much, much lower than n<sup>2</sup>.</p>
+<img width="50%" src="./graphics/around_check.svg">
+<p>After making this switch, I was able to simulate upwards of 50 <em>thousand</em> circles moving around at 60 timesteps a second, at a decent physics fidelity (simply put, how quickly we update positions and squash overlaps). Of course, this number was bound to go down once food and obstacles went into place, and tank once the actual sense-action implementation of neural networks were added.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="genetic-algorithms"><a class="header" href="#genetic-algorithms">Genetic Algorithms</a></h1>
+<h2 id="why"><a class="header" href="#why">Why?</a></h2>
+<p>Natural selection is the most robust optimum-search algorithm in the universe. You and I are its products too<a id="1up" href="GA.html#1down"><sup>1</sup></a>. Naturally, it is a very enticing model in fields that concern themselves primarily with solving problems by finding good solutions in a vast space of possible solutions.</p>
+<p>Reinforcement Learning (RL) algorithms are predicated on the existence of a reward function. They suffer when the reward function is not well defined or not particularly talkative, and either ungodly amounts of compute, or extremely painstaking reward-function engineering by domain experts, or usually both (c.f. pretty much any deep-learning publication in RL) compensate for it.</p>
+<p>Genetic algorithms, though weakly subsumed by the "RL" umbrella, are far easier to implement than a lot of flagship RL algorithms, far more robust to "moving-target" rewards where the nature of the required task evolves over time, and do relatively okay even under very quiet reward functions, such as when "time stayed alive" is the only metric available to assess a solution. They may also be less inclined to <a href="https://en.wikipedia.org/wiki/Overfitting">overfit</a> to the fitness function.</p>
+<h2 id="how"><a class="header" href="#how">How?</a></h2>
+<p>There is an "environment" or more generally a "fitness function" that individuals can interact with and be assessed by. At the very beginning, a large number of individuals are birthed with randomly assigned forms. What a "form" is and what the fitness function is, are very domain-specific questions. For example, if looking to improve how aerodynamic a certain vehicle part is, the "form" would be the physical structure of the part, and the fitness function, the metrics of testing this form in a physical fluid simulation. But in other settings, it could also be how an individual "acts" in an environment based on the sensory inputs it is given.</p>
+<img width="100%" src="./graphics/ga.svg">
+<p>Two tasks, running essentially on loop, give the general struction of the algorithm:</p>
+<ul>
+<li>
+<h3 id="selection"><a class="header" href="#selection">Selection</a></h3>
+<p>When a "generation" or one iteration of the [form-generation, fitness assessment] cycle concludes, individuals with the best fitness are selected as prospect "parents" to the next generation. This could either be through assigning a higher probability to them when selecting parent forms, or discarding all the other forms entirely, or some combination of the two<a id="2up" href="GA.html#2down"><sup>2</sup></a>.</p>
+</li>
+<li>
+<h3 id="crossover-and-mutation"><a class="header" href="#crossover-and-mutation">Crossover and Mutation</a></h3>
+<p>We need to describe how one or more parent-forms inform the creation of a child-form. In a lot of cases, "sexual" reproduction is the model, where two parent forms are chosen and "combined" to produce a new form, as this takes a much wider sweep of the search space.</p>
+<p><em><strong>Crossover</strong></em> deals with how old forms will be combined to create new ones.<br />
+Sometimes, when convenient, this could be as simple as linearly-interpolating two parents by some constant:</p>
+<pre><code class="language-python">def produce_child(parent1, parent2, lerp_constant):
+    child = parent1 * lerp_constant + (1 - lerp_constant) * parent2
+    
+    return child
+</code></pre>
+<p><em><strong>Mutation</strong></em> helps "explore" out into the space of all possible solutions, instead of being confined to the <a href="https://en.wikipedia.org/wiki/Convex_hull">convex hull</a> of the original starting population, which might not house any good solution at all. In the simplest form, it could be as simple as adding a small randomness evenly to the form generated by crossover:</p>
+<pre><code class="language-python">def produce_and_mutate_child(parent1, parent2, lerp_constant, mutation_rate):
+    mutant_form = generate_random_form()
+    
+    child = parent1 * lerp_constant + (1 - lerp_constant) * parent2
+    child = child + (mutant_form * mutation_rate)
+
+    return child
+</code></pre>
+<p>Describing the crossover and mutation functions is an extremely involved process in any serious implementation, and this is usually the step where the most domain knowledge is injected into the algorithm. Whether the algorithm will find a really good solution, or a solution at all, is really sensitive to how well these functions are defined. The toy functions above are for illustrating the basic structure of this step.</p>
+</li>
+</ul>
+<h2 id="when"><a class="header" href="#when">When?</a></h2>
+<p>Whenever convenient! In the context of neural networks, in a lot of situations in, Gradient Descent is not an option at all, since GD requires that the fitness function be a differentiable function, and fitness in a lot of contexts is quite arbitrary, such as the sum of small rewards accrued over time, or duration of survival, etc. Even other RL algorithms that address such "black box fitness function" cases are exceedingly cumbersome to implement, and require an astronomical amount of individual-fitnessfunction interaction data.</p>
+<p>But! It should be noted that GA are not a silver bullet, and often impractical in deep-neural-network settings, given the vastness of the search spaces, and sensitivity to small changes in form, and difficulty in conceptualizing mathematically meaningful crossover and mutation operations, and the computational load of keeping around and operating large numbers of individuals.</p>
+<h2 id="who"><a class="header" href="#who">Who?</a></h2>
+<p>What do you mean?</p>
+<h2 id="what"><a class="header" href="#what">What?</a></h2>
+<p>What??</p>
+<hr>
+<p id="1down"><a href="GA.html#1up"><sup>1</sup></a>Probably didn't do that great of a job with me, but point stands.</p>
+<p id="2down"><a href="GA.html#2up"><sup>2</sup></a>Often, when using "Survival of the fittest" as an arguemnt to defend generally evil behaviour, midwits operate with the notion that the "fittest" in the physical sense should have free reign over the weak, and therefore, subjugation is the natural order. But "fit" in the context of evolution refers to how well an individual <i>fits</i> the evolving needs of its environment. A gorilla is no more "fit" than a wittle baby kitten. Highly social species, in every single case, thrive when the strong consistently defend the weak. Even as far back in time as when the Neanderthals were still around, there is evidence that the less-able were taken care of dearly, and led long, happy lives amongst their tribe.</p><div style="break-before: page; page-break-before: always;"></div><h1 id="beings-sense-actions"><a class="header" href="#beings-sense-actions">Beings' Sense-Actions</a></h1>
+<p>For the little circle-beings to interact in their world, by moving around, eating food, and placing walls, they need to</p>
+<img width=100% src="./graphics/being.svg">
+<h2 id="1-have-sense-organs"><a class="header" href="#1-have-sense-organs">1. Have "sense organs"</a></h2>
+<p>In machine learning, everything is a vector. A sequence of disparate values? Vector. Your name? A bunch of vectors. Everything is a vector. Neural networks can only operate on vectors. This means that their "sensory" inputs should come in the form of vectors, and naturally, we receive their "actions" as a vector too. This is my approach:</p>
+<p>Remember our surround-collision-checking algorithm? When you're looking at another for overlap, you can also look at all of its inner details! If it's a being-circle, its health, and the relative angle of your orientations. If it's a food-circle or a wall-circle, their age. And naturally, the relative distance between it and yourself. All of these can go into their own arrays in your own memory. It would look something like this:</p>
+<pre><code class="language-py">[being/food/wall]_circles_inputs = {[2., 3.4, 5.234], [1.34, 2.163, 9.67], ...}
+</code></pre>
+<p>Additionally, since they can "speak," it would be pointless if they couldn't also "hear." And what is speech? You guessed it, a vector. Like before,</p>
+<pre><code class="language-py">speech_inputs = {[1, 2, 3, 4, 5], [7, 8, 9, 10, 11], ...} # got lazy with typing so many floating-point numbers
+</code></pre>
+<h2 id="2-act"><a class="header" href="#2-act">2. "Act"</a></h2>
+<p>Once all of these vectors are collected into a bunch of arrays, they're fed into our being-neural-networks, which spit out action vectors, which comprise these values:</p>
+<ul>
+<li>forward-backward change in position (single value, <code>-1 &lt;= x &lt;= 1</code>)</li>
+<li>change in rotation (single value, <code>-1 &lt;= x &lt;= 1</code>)</li>
+<li>whether to build a wall (single value, <code>x &lt; 0 or x &gt;= 0?</code>)</li>
+<li>whether to speak (single value, <code>x &lt; 0 or x &gt;= 0?</code>)</li>
+<li>if to speak, what to say? (multiple values i.e. a sub-vector, all in <code>range[-1, 1]</code>)</li>
+</ul>
+<p>The movement-components (rotate, move, etc.) are implemented as updates to the physics engine in the next time-step. The "speechlets" are released as emanating bursts out into the world, centred at where they were first uttered. All beings that overlap with this expanding burst can "hear" them, i.e. the speech sub-vector goes into their speech_inputs array.</p>
+<p>I will dedicate the next section to the architecture details of the neural networks.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="neural-networks"><a class="header" href="#neural-networks">Neural Networks</a></h1>
+<p>I used the <a href="https://burn.dev/">Burn</a> crate for all the neural network operations. I was hung up on how I should go about implementing the NNs for a really long time, and it was a major reason for my temprarily abandoning the project. Burn is quite good, and really fast!</p>
+<p>Currently, I have two yes/no choices for how a neural network is constructed, giving us four architectures. I plan to add more in the future, but the computation is quite costly, and it's a tradeoff of how fast you want the algorithm to run and iterate through generations, versus how sophisticated you want the NN architecture itself to be.</p>
+<p>If you are not at least a little bit comfortable with deep learning and neural networks, this may be a bit hard to follow. But I will try to explain as abstractly as will let me preserve coherence.</p>
+<img id="being_nn_img" width="100%" src="./graphics/being_nn.svg">
+<h2 id="1-choice-of-aggregator-function"><a class="header" href="#1-choice-of-aggregator-function">1. Choice of <em>aggregator</em> function</a></h2>
+<p>You remember our arrays containing all the inputs, one each for each input type. Naturally, during the course of a being's interaction with the world, depending on where it is among other things, the lengths of these arrays will vary. If nobody's feeling talkative, the <code>speech_inputs</code> array will be empty, for example.</p>
+<p>How do you take these varying-length arrays, and map them to a single vector? I made two different maps, with <em>vastly</em> different computational costs.</p>
+<p>Now, there is one crucial requirement that a prospect aggregator function must satisfy: Its output should remain the same no matter how the input array is "ordered" (permutated). That is, <code>aggr([1, 2])</code> should be exactly equal to <code>aggr([2, 1])</code>. This is a very strong constraint (called permutation-invariance), and it is difficult to design functions that meet it without making some sacrifices.</p>
+<h3 id="sumfx"><a class="header" href="#sumfx"><code>sum(f(x))</code></a></h3>
+<ul>
+<li>
+<p>Consider our <code>being_inputs</code> array from <a href="./beings.html">the beings page</a>:</p>
+<pre><code class="language-py">{[2., 3.4, 5.234], [1.34, 2.163, 9.67], ...}
+</code></pre>
+</li>
+<li>
+<p>The inner vectors are <code>3</code> long, so we say that the array has shape <code>(N, 3)</code>.</p>
+</li>
+<li>
+<p>Consider a neural network <code>f</code> that has an input size of <code>3</code>, and an output size of <code>m</code>. All this means is that it takes <code>3</code>-long vectors, and returns <code>m</code>-long vectors.</p>
+</li>
+<li>
+<p>Now, each of the input vectors in our array, we run through <code>f</code>, and collect <code>f</code>'s outputs in a different array. Naturally, this new array will have shape <code>(N, m)</code>.</p>
+</li>
+<li>
+<p>Now, we sum this <code>(N, m)</code> array along the first dimension: If our array was</p>
+<pre><code class="language-py">{[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]}
+</code></pre>
+<p>after running the original <code>being_inputs</code> array through <code>f</code>, then after performing this sum operation, it becomes a single vector, <code>[15, 18, 21, 24]</code>, of shape <code>(1, m)</code>.</p>
+</li>
+<li>
+<p>You might have caught the drawback here. When we run <code>f</code> over each input separately, we don't account for how assessing one input might benefit from taking into consideration some other input. For example, if you notice food, but also that it is completely surrounded by walls, you will conclude that there is no point reaching for it. But if you assess the food and the walls completely in isolation, there is no way you can make this seemingly correct inference.</p>
+</li>
+</ul>
+<h3 id="self-attention"><a class="header" href="#self-attention">Self-Attention</a></h3>
+<p>I implemented, if poorly, <a href="https://arxiv.org/abs/1810.00825">Set-Transformers</a>! I will give a simple overview. But you should acquaint yourself with <a href="https://arxiv.org/abs/1706.03762">the self-attention mechanism</a>, if this is to fully make sense.</p>
+<ul>
+<li>
+<p>In its essence, an attention function operates on two input vectors: a "key" vector and a "query" vector, and produces a measure, usually a single number (called a weight), for how relevant it thinks the query vector is in the assessment of the key vector.</p>
+</li>
+<li>
+<p>When given an entire array of inputs, like our arrays, for each of the inputs,</p>
+<ul>
+<li>it fixes the current input as the key vector.</li>
+<li>every other vector in the array, one at a time, it treats as the query vector, and produces an array of weights.</li>
+<li>using these weights, it aggregates these weighted query vectors into a single vector, not unlike the previous <code>sum(f(x))</code>, and produces a single vector to add to our key vector.</li>
+<li>After this is done for every single vector in our array, <em>now</em> we perform our <code>sum(f(x))</code>. But you see how the function <code>f</code> here is vastly more sophisticated, since it takes into account all the rest of the array, when previously, it depended only on the given input.</li>
+</ul>
+</li>
+</ul>
+<p>But you might have noticed the issue: key-query business is extremely expensive! Whereas sumfx's computational load was proportional to the length of our arrays, using attention as our aggregator instead is proportional to the <em>square</em> of the length. This is quite unconscionable if we're working with humble little machines like I am, without gigantic GPUs.</p>
+<p>Anyway, this single vector of shape <code>(1, m)</code>, we use downstream in our bigger neural network, by in some form combining it with the other <code>(1, ...)</code> vectors produced for the other forms of input, before coming up with our final being output.</p>
+<p>The way that I am currently doing it is, after we've performed the above for all kinds of vector, being, food, wall, speech, we concatenate the final <code>(1, ...)</code> vectors along the first axis, yielding <code>(1, m + n + o + p)</code>, a fairly long vector, that we finally map to our desired output (actions + speech vector as discussed in <a href="./beings.html">the beings section</a>) shape using another little neural network.</p>
+<h2 id="2-whether-the-nn-remembers-the-past"><a class="header" href="#2-whether-the-nn-remembers-the-past">2. Whether the NN remembers the past</a></h2>
+<p>Once done with the previous <em>aggregation</em> portion of sense-action we have a choice to either discard past inputs, or take them into consideration, as-is (as Transformers do), or in a summarized form (see <a href="https://www.bioinf.jku.at/publications/older/2604.pdf">LSTMs</a> for example). Now if we were to use gradient descent, this would get more complicated since we would have to include the "time" aspect of it into our backpropagation (but even that has been buried under like 20 years of library abstractions).</p>
+<p>So far, I have only implemented LSTMs for past-processing. Transformers would work too, but as we saw before, the computation costs are huge, and also, remember permutation-invariance? Whereas it was indispensible before, it's actually a hurdle now! Because when looking back into the past, the order in which things happened is incredibly important! So much work goes into <em>un</em>doing this permutation-invariance to put Transformers to use in sentence-modelling (all the rage these days). And of course, the <code>n^2</code> computation cost too.</p>
+<p>I will not get into how an LSTM works here. They are a variant of <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Neural Networks</a>. The original paper I have linked above too is rather dense, and a lot of the design choices are rather arbitrary too in my opinion. But essentially,</p>
+<p>When an RNN is given an input <code>x</code>, there are two consequences:</p>
+<ul>
+<li>Like in traditional "feed-forward" NNs, there is an output <code>y</code> produced by the processing of <code>x</code>.</li>
+<li>Additionally, unlike FFNNs, there is an updation in the "internal state" of the RNN during the processing of <code>x</code>.</li>
+</ul>
+<p>This means that <code>x</code> will now have an impact on the processing of future <code>x</code>s as well. It has been "remembered" in a way; summarized into the RNN's memory. This summarization is usually done by smaller NNs that are sub-components of the RNN.</p>
+<h2 id="possible-combinations"><a class="header" href="#possible-combinations">Possible combinations</a></h2>
+<p>These choices give us four possible NN architectures:</p>
+<ul>
+<li><code>(sumfx, no-past)</code></li>
+<li><code>(sumfx, lstm)</code></li>
+<li><code>(self-attn, no-past)</code></li>
+<li><code>(self-attn, lstm)</code></li>
+</ul>
+<p>This list also happens to occur in increasing order of computational load.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="considerations"><a class="header" href="#considerations">Considerations</a></h1>
+<ul>
+<li>
+<p>Computational costs, of course, are a huge factor in how effective our search is. Even in perfect conditions, it might just <em>take too long</em> to iterate over generations.</p>
+</li>
+<li>
+<p>On the other hand, if our NNs are very trivial, they might just not be big enough by design to solve a complicated task.</p>
+</li>
+<li>
+<p>However, there is also a converse: the lower the complexity of our beings, the bigger a sweep we can take of their search space with the same relative difficulty. Since unlike in Gradient Descent, we don't have exact, pointed directions to take in the search space, we might just wander in the dark forever, past good regions, never finding a good solution region, if the NNs are gigantic, with millions of parameters.</p>
+</li>
+</ul>
+<h1 id="limitations"><a class="header" href="#limitations">Limitations</a></h1>
+<ul>
+<li>So far, my mutation-crossover functions are primitive.
+<ul>
+<li>The first, that I have now deprecated, was the very same toy-function that we went over earlier: linear-interpolation. This is all but useless where individuals are not very small vectors. For NNs, it is a lost cause.</li>
+<li>The other, is splicing: for every parameter in the NN, it is a <em>choice</em> of which parent that particular parameter will come from, and not a <em>linear combination</em>. I mean, it <em>is</em> a linear combination, with a binary elementwise product instead of a scalar product.</li>
+<li>There are vastly more sophisticated mutation-crossover methods for NNs. <a href="https://arxiv.org/abs/1803.10122">World Models</a>, that implements some really effective mut-cross, is a personal favourite, and is just about the only modern AI paper that sticks out to me as innovative in my entire time of studying the subject. These are well beyond what my time will allow me to implement (and, I don't really like linear algebra all that much).</li>
+</ul>
+</li>
+<li>Well, my humble little laptop. I do not have a beefy GPU, and I have 8 CPU cores. Those more computationally gifted may see the algorithm through to fruition. I won't.</li>
+<li>And, I haven't really seen any evidence, even remotely, of a communication system having evolved among the beings. But, I couldn't really run any session for more than a few hundred generations.<br />
+Of course, there was food-seeking, obstacle-avoiding, conflict-avoiding behaviour, but nothing in the way of trying to speak. But these are all incredibly sensitive to the penalties incurred for movement, wall-construction, and speaking as well.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
