@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html" class="active"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Considerations and Limitations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html" class="active"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Thoughts and Such</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -177,15 +177,15 @@
 <h2 id="why"><a class="header" href="#why">Why?</a></h2>
 <p>Natural selection is the most robust optimum-search algorithm in the universe. You and I are its products too<a id="1up" href="#1down"><sup>1</sup></a>. Naturally, it is a very enticing model in fields that concern themselves primarily with solving problems by finding good solutions in a vast space of possible solutions.</p>
 <p>Reinforcement Learning (RL) algorithms are predicated on the existence of a reward function. They suffer when the reward function is not well defined or not particularly talkative, and either ungodly amounts of compute, or extremely painstaking reward-function engineering by domain experts, or usually both (c.f. pretty much any deep-learning publication in RL) compensate for it.</p>
-<p>Genetic algorithms, though weakly subsumed by the "RL" umbrella, are far easier to implement than a lot of flagship RL algorithms, far more robust to "moving-target" rewards where the nature of the required task evolves over time, and do relatively okay even under very quiet reward functions, such as when "time stayed alive" is the only metric available to assess a solution. They may also be less inclined to <a href="https://en.wikipedia.org/wiki/Overfitting">overfit</a> to the fitness function.</p>
+<p>Genetic algorithms, though weakly subsumed by the "RL" umbrella, are far easier to implement than a lot of flagship RL algorithms, far more robust to "moving-target" rewards where the nature of the required task evolves over time, and do relatively okay even under very quiet reward functions, such as when "time spent alive" is the only metric available to assess a solution. They may also be less inclined to <a href="https://en.wikipedia.org/wiki/Overfitting">overfit</a> to the fitness function. It is a very common observation that in some RL situations, solutions are often loopholes that maximise the fitness function vacuously, bypassing competence, and even if they manage to appear to perform as expected, have countless blindspots.</p>
 <h2 id="how"><a class="header" href="#how">How?</a></h2>
 <p>There is an "environment" or more generally a "fitness function" that individuals can interact with and be assessed by. At the very beginning, a large number of individuals are birthed with randomly assigned forms. What a "form" is and what the fitness function is, are very domain-specific questions. For example, if looking to improve how aerodynamic a certain vehicle part is, the "form" would be the physical structure of the part, and the fitness function, the metrics of testing this form in a physical fluid simulation. But in other settings, it could also be how an individual "acts" in an environment based on the sensory inputs it is given.</p>
 <img width="100%" src="./graphics/ga.svg">
 <p>Two tasks, running essentially on loop, give the general struction of the algorithm:</p>
 <ul>
 <li>
-<h3 id="selection"><a class="header" href="#selection">Selection</a></h3>
-<p>When a "generation" or one iteration of the [form-generation, fitness assessment] cycle concludes, individuals with the best fitness are selected as prospect "parents" to the next generation. This could either be through assigning a higher probability to them when selecting parent forms, or discarding all the other forms entirely, or some combination of the two<a id="2up" href="#2down"><sup>2</sup></a>.</p>
+<h3 id="selection2"><a class="header" href="#selection2">Selection<a id="2up" href="#2down"><sup>2</sup></a></a></h3>
+<p>When a "generation," or one iteration of the [form-generation, fitness assessment] cycle concludes, individuals with the best fitness are selected as prospect "parents" to the next generation. This could either be through assigning a higher probability to them when selecting parent forms, or discarding all the other forms entirely, or some combination of the two.</p>
 </li>
 <li>
 <h3 id="crossover-and-mutation"><a class="header" href="#crossover-and-mutation">Crossover and Mutation</a></h3>
@@ -197,21 +197,21 @@ Sometimes, when convenient, this could be as simple as linearly-interpolating tw
     
     return child
 </code></pre>
-<p><em><strong>Mutation</strong></em> helps "explore" out into the space of all possible solutions, instead of being confined to the <a href="https://en.wikipedia.org/wiki/Convex_hull">convex hull</a> of the original starting population, which might not house any good solution at all. In the simplest form, it could be as simple as adding a small randomness evenly to the form generated by crossover:</p>
+<p><em><strong>Mutation</strong></em> helps "explore" out into the space of all possible solutions, instead of being confined to the <a href="https://en.wikipedia.org/wiki/Convex_hull">convex hull</a> of the original starting population, which might not house any good solution at all. In its simplest form, it could be as simple as adding a small randomness evenly to a form first generated by crossover:</p>
 <pre><code class="language-python">def produce_and_mutate_child(parent1, parent2, lerp_constant, mutation_rate):
     mutant_form = generate_random_form()
     
-    child = parent1 * lerp_constant + (1 - lerp_constant) * parent2
+    child = produce_child(parent1, parent2, lerp_constant)
     child = child + (mutant_form * mutation_rate)
 
     return child
 </code></pre>
-<p>Describing the crossover and mutation functions is an extremely involved process in any serious implementation, and this is usually the step where the most domain knowledge is injected into the algorithm. Whether the algorithm will find a really good solution, or a solution at all, is really sensitive to how well these functions are defined. The toy functions above are for illustrating the basic structure of this step.</p>
+<p>Describing the crossover and mutation functions is an extremely involved process in any serious implementation, and this is usually the step where the most domain knowledge is injected into the algorithm. Whether the algorithm will find a really good solution, or a solution at all, is really sensitive to how well these functions are defined. The toy functions above are only for illustrating the basic structure of this step.</p>
 </li>
 </ul>
 <h2 id="when"><a class="header" href="#when">When?</a></h2>
-<p>Whenever convenient! In the context of neural networks, in a lot of situations in, Gradient Descent is not an option at all, since GD requires that the fitness function be a differentiable function, and fitness in a lot of contexts is quite arbitrary, such as the sum of small rewards accrued over time, or duration of survival, etc. Even other RL algorithms that address such "black box fitness function" cases are exceedingly cumbersome to implement, and require an astronomical amount of individual-fitnessfunction interaction data.</p>
-<p>But! It should be noted that GA are not a silver bullet, and often impractical in deep-neural-network settings, given the vastness of the search spaces, and sensitivity to small changes in form, and difficulty in conceptualizing mathematically meaningful crossover and mutation operations, and the computational load of keeping around and operating large numbers of individuals.</p>
+<p>When other standard NN algorithms are infeasible. In a lot of situations, Gradient Descent is not an option at all, since GD requires that the fitness function be a differentiable function, and fitness in a lot of contexts is quite arbitrary, such as the sum of small rewards accrued over time, or duration of survival, etc. Even other RL algorithms that address such "black-box" fitness functions are exceedingly cumbersome to implement, and require an astronomical amount of individual-fitnessfunction interaction data.</p>
+<p>But! It should be noted that GA are not a silver bullet either, and often impractical in deep-neural-network settings, given the vastness of the search spaces, and sensitivity of behaviour to small changes in form, and difficulty in conceptualizing mathematically meaningful crossover and mutation operations, and the computational load of keeping around and operating large numbers of individuals.</p>
 <h2 id="who"><a class="header" href="#who">Who?</a></h2>
 <p>What do you mean?</p>
 <h2 id="what"><a class="header" href="#what">What?</a></h2>

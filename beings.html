@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html" class="active"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Considerations and Limitations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html" class="active"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Thoughts and Such</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,15 +174,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="beings-sense-actions"><a class="header" href="#beings-sense-actions">Beings' Sense-Actions</a></h1>
-<p>For the little circle-beings to interact in their world, by moving around, eating food, and placing walls, they need to</p>
 <img width=100% src="./graphics/being.svg">
+<p>For the little circle-beings to interact with their world, by moving around, eating food, and placing walls, they need to</p>
 <h2 id="1-have-sense-organs"><a class="header" href="#1-have-sense-organs">1. Have "sense organs"</a></h2>
-<p>In machine learning, everything is a vector. A sequence of disparate values? Vector. Your name? A bunch of vectors. Everything is a vector. Neural networks can only operate on vectors. This means that their "sensory" inputs should come in the form of vectors, and naturally, we receive their "actions" as a vector too. This is my approach:</p>
-<p>Remember our surround-collision-checking algorithm? When you're looking at another for overlap, you can also look at all of its inner details! If it's a being-circle, its health, and the relative angle of your orientations. If it's a food-circle or a wall-circle, their age. And naturally, the relative distance between it and yourself. All of these can go into their own arrays in your own memory. It would look something like this:</p>
+<p>In machine learning, everything is a vector. A sequence of disparate measurements? Vector. Your name? A bunch of vectors. Everything is a vector. You're probably a vector reading this. Neural networks can only operate on vectors. This means that their "sensory" inputs should come in the form of vectors, and naturally, we receive their "actions" as a vector too. This is my approach:</p>
+<p>Remember our surround-collision-checking algorithm? When you're a circle looking at another circle for overlap, you can also look at all of its inner details! If it's a being-circle, its health, and the relative angle of your orientation to it. If it's a food-circle or a wall-circle, its age/value. And naturally, the relative distance between it and yourself. All of these can go into their own arrays in your own memory. It would look something like this:</p>
 <pre><code class="language-py">[being/food/wall]_circles_inputs = {[2., 3.4, 5.234], [1.34, 2.163, 9.67], ...}
 </code></pre>
 <p>Additionally, since they can "speak," it would be pointless if they couldn't also "hear." And what is speech? You guessed it, a vector. Like before,</p>
-<pre><code class="language-py">speech_inputs = {[1, 2, 3, 4, 5], [7, 8, 9, 10, 11], ...} # got lazy with typing so many floating-point numbers
+<pre><code class="language-py">speech_inputs = {[1, 2, 3, 4, 5], [7, 8, 9, 10, 11], ...}
+# got lazy with typing so many floating-point numbers
 </code></pre>
 <h2 id="2-act"><a class="header" href="#2-act">2. "Act"</a></h2>
 <p>Once all of these vectors are collected into a bunch of arrays, they're fed into our being-neural-networks, which spit out action vectors, which comprise these values:</p>
@@ -193,8 +194,8 @@
 <li>whether to speak (single value, <code>x &lt; 0 or x &gt;= 0?</code>)</li>
 <li>if to speak, what to say? (multiple values i.e. a sub-vector, all in <code>range[-1, 1]</code>)</li>
 </ul>
-<p>The movement-components (rotate, move, etc.) are implemented as updates to the physics engine in the next time-step. The "speechlets" are released as emanating bursts out into the world, centred at where they were first uttered. All beings that overlap with this expanding burst can "hear" them, i.e. the speech sub-vector goes into their speech_inputs array.</p>
-<p>I will dedicate the next section to the architecture details of the neural networks.</p>
+<p>The movement-components (rotate, move, etc.) are implemented as updates to the physics engine in the next time-step. The "speechlets" are released as emanating bursts out into the world, centred at where they were first uttered. All beings that overlap with this expanding burst can "hear" it, i.e. the speech sub-vector goes into their <code>speech_inputs</code> array.</p>
+<p>The next section deals with the architecture details of the neural networks.</p>
 
                     </main>
 

@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html" class="active"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Considerations and Limitations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html" class="active"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html"><strong aria-hidden="true">3.</strong> Thoughts and Such</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -175,12 +175,12 @@
                     <main>
                         <h1 id="neural-networks"><a class="header" href="#neural-networks">Neural Networks</a></h1>
 <p>I used the <a href="https://burn.dev/">Burn</a> crate for all the neural network operations. I was hung up on how I should go about implementing the NNs for a really long time, and it was a major reason for my temprarily abandoning the project. Burn is quite good, and really fast!</p>
-<p>Currently, I have two yes/no choices for how a neural network is constructed, giving us four architectures. I plan to add more in the future, but the computation is quite costly, and it's a tradeoff of how fast you want the algorithm to run and iterate through generations, versus how sophisticated you want the NN architecture itself to be.</p>
-<p>If you are not at least a little bit comfortable with deep learning and neural networks, this may be a bit hard to follow. But I will try to explain as abstractly as will let me preserve coherence.</p>
+<p>Currently, I have two yes/no choices for how a neural network is constructed, giving us four possible architectures. I plan to add more in the future, but the computation is already quite costly, and it's a tradeoff of how fast you want the algorithm to run and iterate through generations, versus how sophisticated you want the NN itself to be.</p>
+<p>If you are not at least a little bit comfortable with deep learning and neural networks, this may be a bit hard to follow. But I will try to explain as abstractly as will let me preserve meaning.</p>
 <img id="being_nn_img" width="100%" src="./graphics/being_nn.svg">
 <h2 id="1-choice-of-aggregator-function"><a class="header" href="#1-choice-of-aggregator-function">1. Choice of <em>aggregator</em> function</a></h2>
-<p>You remember our arrays containing all the inputs, one each for each input type. Naturally, during the course of a being's interaction with the world, depending on where it is among other things, the lengths of these arrays will vary. If nobody's feeling talkative, the <code>speech_inputs</code> array will be empty, for example.</p>
-<p>How do you take these varying-length arrays, and map them to a single vector? I made two different maps, with <em>vastly</em> different computational costs.</p>
+<p>You remember our arrays containing all the inputs, one each for each input type. Naturally, during the course of a being's interaction with the world, depending on where it is, among other things, the lengths of these arrays will vary. If nobody's feeling talkative, the <code>speech_inputs</code> array will be empty, for example.</p>
+<p>How do you take these varying-length arrays, and map them to a single vector? I have two different maps, with <em>vastly</em> different computational costs.</p>
 <p>Now, there is one crucial requirement that a prospect aggregator function must satisfy: Its output should remain the same no matter how the input array is "ordered" (permutated). That is, <code>aggr([1, 2])</code> should be exactly equal to <code>aggr([2, 1])</code>. This is a very strong constraint (called permutation-invariance), and it is difficult to design functions that meet it without making some sacrifices.</p>
 <h3 id="sumfx"><a class="header" href="#sumfx"><code>sum(f(x))</code></a></h3>
 <ul>
@@ -205,7 +205,7 @@
 <p>after running the original <code>being_inputs</code> array through <code>f</code>, then after performing this sum operation, it becomes a single vector, <code>[15, 18, 21, 24]</code>, of shape <code>(1, m)</code>.</p>
 </li>
 <li>
-<p>You might have caught the drawback here. When we run <code>f</code> over each input separately, we don't account for how assessing one input might benefit from taking into consideration some other input. For example, if you notice food, but also that it is completely surrounded by walls, you will conclude that there is no point reaching for it. But if you assess the food and the walls completely in isolation, there is no way you can make this seemingly correct inference.</p>
+<p>You might have caught the drawback here. When we run <code>f</code> over each input separately, we don't account for how assessing one input might benefit from taking into consideration some other input. For example, if you notice food, but also that it is completely surrounded by walls, you will conclude that there is no point in reaching for it. But if you assess the food and the walls completely in isolation like we are doing here, there is no way you can make this seemingly obvious inference.</p>
 </li>
 </ul>
 <h3 id="self-attention"><a class="header" href="#self-attention">Self-Attention</a></h3>
@@ -215,26 +215,26 @@
 <p>In its essence, an attention function operates on two input vectors: a "key" vector and a "query" vector, and produces a measure, usually a single number (called a weight), for how relevant it thinks the query vector is in the assessment of the key vector.</p>
 </li>
 <li>
-<p>When given an entire array of inputs, like our arrays, for each of the inputs,</p>
+<p>When given an entire array of inputs, like our arrays, looping over each of the inputs,</p>
 <ul>
-<li>it fixes the current input as the key vector.</li>
+<li>it fixes the current input of the loop as the key vector.</li>
 <li>every other vector in the array, one at a time, it treats as the query vector, and produces an array of weights.</li>
-<li>using these weights, it aggregates these weighted query vectors into a single vector, not unlike the previous <code>sum(f(x))</code>, and produces a single vector to add to our key vector.</li>
-<li>After this is done for every single vector in our array, <em>now</em> we perform our <code>sum(f(x))</code>. But you see how the function <code>f</code> here is vastly more sophisticated, since it takes into account all the rest of the array, when previously, it depended only on the given input.</li>
+<li>using these weights, it produces a "value" vector, which is some combination of each query vector and its corresponding weight, and adjoins (usually, adds) this value vector to our key vector.</li>
+<li>After this is done for every single vector in our array, <em>now</em> we perform our <code>sum(f(x))</code>. But you see how the function <code>f</code> here is vastly more sophisticated, since it takes into account all the rest of the array for each input, when previously, it depended only on the given input.</li>
 </ul>
 </li>
 </ul>
-<p>But you might have noticed the issue: key-query business is extremely expensive! Whereas sumfx's computational load was proportional to the length of our arrays, using attention as our aggregator instead is proportional to the <em>square</em> of the length. This is quite unconscionable if we're working with humble little machines like I am, without gigantic GPUs.</p>
+<p>But you might have noticed the issue: this key-query business is extremely expensive! Whereas sumfx's computational load was proportional to the length of our arrays, using attention as our aggregator instead is proportional to the <em>square</em> of the length. This is unconscionable if we're working with humble little machines like I am, without gigantic GPUs.</p>
 <p>Anyway, this single vector of shape <code>(1, m)</code>, we use downstream in our bigger neural network, by in some form combining it with the other <code>(1, ...)</code> vectors produced for the other forms of input, before coming up with our final being output.</p>
 <p>The way that I am currently doing it is, after we've performed the above for all kinds of vector, being, food, wall, speech, we concatenate the final <code>(1, ...)</code> vectors along the first axis, yielding <code>(1, m + n + o + p)</code>, a fairly long vector, that we finally map to our desired output (actions + speech vector as discussed in <a href="./beings.html">the beings section</a>) shape using another little neural network.</p>
 <h2 id="2-whether-the-nn-remembers-the-past"><a class="header" href="#2-whether-the-nn-remembers-the-past">2. Whether the NN remembers the past</a></h2>
 <p>Once done with the previous <em>aggregation</em> portion of sense-action we have a choice to either discard past inputs, or take them into consideration, as-is (as Transformers do), or in a summarized form (see <a href="https://www.bioinf.jku.at/publications/older/2604.pdf">LSTMs</a> for example). Now if we were to use gradient descent, this would get more complicated since we would have to include the "time" aspect of it into our backpropagation (but even that has been buried under like 20 years of library abstractions).</p>
 <p>So far, I have only implemented LSTMs for past-processing. Transformers would work too, but as we saw before, the computation costs are huge, and also, remember permutation-invariance? Whereas it was indispensible before, it's actually a hurdle now! Because when looking back into the past, the order in which things happened is incredibly important! So much work goes into <em>un</em>doing this permutation-invariance to put Transformers to use in sentence-modelling (all the rage these days). And of course, the <code>n^2</code> computation cost too.</p>
-<p>I will not get into how an LSTM works here. They are a variant of <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Neural Networks</a>. The original paper I have linked above too is rather dense, and a lot of the design choices are rather arbitrary too in my opinion. But essentially,</p>
+<p>I will not get into how an LSTM works here. They are a subset of <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Neural Networks</a>. The original paper I have linked above too is rather dense, and a lot of the design choices are rather arbitrary too in my opinion. But essentially,</p>
 <p>When an RNN is given an input <code>x</code>, there are two consequences:</p>
 <ul>
 <li>Like in traditional "feed-forward" NNs, there is an output <code>y</code> produced by the processing of <code>x</code>.</li>
-<li>Additionally, unlike FFNNs, there is an updation in the "internal state" of the RNN during the processing of <code>x</code>.</li>
+<li>Additionally, unlike FF-NNs, there is an updation in the "internal state" of the RNN during the processing of <code>x</code>.</li>
 </ul>
 <p>This means that <code>x</code> will now have an impact on the processing of future <code>x</code>s as well. It has been "remembered" in a way; summarized into the RNN's memory. This summarization is usually done by smaller NNs that are sub-components of the RNN.</p>
 <h2 id="possible-combinations"><a class="header" href="#possible-combinations">Possible combinations</a></h2>

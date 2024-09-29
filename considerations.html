@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Considerations and Limitations - Samsarsa</title>
+        <title>Thoughts and Such - Samsarsa</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html" class="active"><strong aria-hidden="true">3.</strong> Considerations and Limitations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Welcome.html"><strong aria-hidden="true">1.</strong> Welcome!</a></li><li class="chapter-item expanded "><a href="components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="physics.html"><strong aria-hidden="true">2.1.</strong> The Physics Engine</a></li><li class="chapter-item expanded "><a href="GA.html"><strong aria-hidden="true">2.2.</strong> Genetic Algorithms</a></li><li class="chapter-item expanded "><a href="beings.html"><strong aria-hidden="true">2.3.</strong> Beings' Sense-Actions</a></li><li class="chapter-item expanded "><a href="nns.html"><strong aria-hidden="true">2.4.</strong> Neural Networks</a></li></ol></li><li class="chapter-item expanded "><a href="considerations.html" class="active"><strong aria-hidden="true">3.</strong> Thoughts and Such</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -182,7 +182,7 @@
 <p>On the other hand, if our NNs are very trivial, they might just not be big enough by design to solve a complicated task.</p>
 </li>
 <li>
-<p>However, there is also a converse: the lower the complexity of our beings, the bigger a sweep we can take of their search space with the same relative difficulty. Since unlike in Gradient Descent, we don't have exact, pointed directions to take in the search space, we might just wander in the dark forever, past good regions, never finding a good solution region, if the NNs are gigantic, with millions of parameters.</p>
+<p>However, there is also a converse: the lower the complexity of our beings, the bigger a sweep we can take of their search space with the same relative effort. Since unlike in Gradient Descent, we don't have exact, pointed directions to take in the search space, we might just wander in the dark forever, past good regions, never finding a good solution region, if the NNs are gigantic, with millions of parameters.</p>
 </li>
 </ul>
 <h1 id="limitations"><a class="header" href="#limitations">Limitations</a></h1>
@@ -190,7 +190,7 @@
 <li>So far, my mutation-crossover functions are primitive.
 <ul>
 <li>The first, that I have now deprecated, was the very same toy-function that we went over earlier: linear-interpolation. This is all but useless where individuals are not very small vectors. For NNs, it is a lost cause.</li>
-<li>The other, is splicing: for every parameter in the NN, it is a <em>choice</em> of which parent that particular parameter will come from, and not a <em>linear combination</em>. I mean, it <em>is</em> a linear combination, with a binary elementwise product instead of a scalar product.</li>
+<li>The other, is splicing: for every parameter in the NN, it is a <em>choice</em> of which parent that particular parameter will come from, and not a <em>linear combination</em><a id="1upconsiderations" href="#1downconsiderations"><sup>1</sup></a>.</li>
 <li>There are vastly more sophisticated mutation-crossover methods for NNs. <a href="https://arxiv.org/abs/1803.10122">World Models</a>, that implements some really effective mut-cross, is a personal favourite, and is just about the only modern AI paper that sticks out to me as innovative in my entire time of studying the subject. These are well beyond what my time will allow me to implement (and, I don't really like linear algebra all that much).</li>
 </ul>
 </li>
@@ -198,7 +198,10 @@
 <li>And, I haven't really seen any evidence, even remotely, of a communication system having evolved among the beings. But, I couldn't really run any session for more than a few hundred generations.<br />
 Of course, there was food-seeking, obstacle-avoiding, conflict-avoiding behaviour, but nothing in the way of trying to speak. But these are all incredibly sensitive to the penalties incurred for movement, wall-construction, and speaking as well.</li>
 </ul>
-
+<h1 id="futures"><a class="header" href="#futures">Futures</a></h1>
+<p>I will be honest, I am up to here with chores and tasks and errands and such for college applications. And if I do manage to get in a course, I will have of course,work. I don't see myself working on this project very actively any longer, at least for the foreseeable future.</p>
+<hr>
+<p id="1downconsiderations"><a href="#1upconsiderations"><sup>1</sup></a>I mean, it <i>is</i> a linear combination, with a binary elementwise product instead of a scalar product.</p>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
